@@ -96,14 +96,19 @@
          // Funzione per aggiornare la lista della spesa nell'HTML
         function aggiornaLista() {
     let ul = document.getElementById('shopping-list');
+    // Prende il contenitore della lista della spesa dall'HTML
     ul.innerHTML = '';
 
     let categorie = ['frutta', 'verdura', 'altro'];
     for (let categoria of categorie) {
+        // Filtra i prodotti della lista che appartengono a questa categoria
         let prodottiPerCategoria = listaSpesa.filter(p => p.categoria === categoria);
         
+        // Se ci sono prodotti in questa categoria
         if (prodottiPerCategoria.length > 0) {
+            // Crea un'intestazione per la categoria (h3)
             let categoriaHeader = document.createElement('h3');
+            // Scrive il nome della categoria con la prima lettera maiuscola
             categoriaHeader.textContent = categoria.charAt(0).toUpperCase() + categoria.slice(1);
             ul.appendChild(categoriaHeader);
 
@@ -116,13 +121,27 @@
                 deleteButton.style.marginLeft = '10px';
                 deleteButton.textContent = 'Delete';
                 deleteButton.onclick = function() {
+                    // Rimuove il prodotto dalla lista usando l'ID
                     listaSpesa = listaSpesa.filter(p => p.id !== prodotto.id);
                     aggiornaLista();
                 };
 
+                // Pulsante per segnare come acquistato
+                let boughtButton = document.createElement('button');
+                boughtButton.style.marginLeft = '10px';
+                boughtButton.textContent = 'Acquistato';
+                boughtButton.onclick = function() {
+                    // Aggiunge/rimuove la classe "acquistato" al <li>
+                    li.classList.toggle('acquistato');
+                };
+
+                // Aggiunge il pulsante delete all'elemento <li>
                 li.appendChild(deleteButton);
+                li.appendChild(boughtButton);
+                // Aggiunge il <li> all'<ul> della categoria
                 categoriaUl.appendChild(li);
             }
+            // Aggiunge l'<ul> con tutti i prodotti della categoria alla lista principal
             ul.appendChild(categoriaUl);
         }
     }
