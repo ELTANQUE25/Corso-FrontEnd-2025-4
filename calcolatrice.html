@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Calcolatrice</h1>
+    <input type="text" id="display" disabled>
+        <div class="calculator"
+        style="display: grid; grid-template-columns: repeat(4, 50px); gap: 5px; width: max-content; margin-top: 10px;">
+
+        <!-- aggiunge un numero o un operatore al display quando il pulsante viene cliccato. -->
+        <button onclick="appendToDisplay('1')">1</button>  
+        <button onclick="appendToDisplay('2')">2</button>
+        <button onclick="appendToDisplay('3')">3</button>
+        <button onclick="appendToDisplay('+')">+</button>
+
+        <button onclick="appendToDisplay('4')">4</button>
+        <button onclick="appendToDisplay('5')">5</button>
+        <button onclick="appendToDisplay('6')">6</button>
+        <button onclick="appendToDisplay('-')">-</button>
+
+        <button onclick="appendToDisplay('7')">7</button>
+        <button onclick="appendToDisplay('8')">8</button>
+        <button onclick="appendToDisplay('9')">9</button>
+        <button onclick="appendToDisplay('*')">*</button>
+        <button onclick="appendToDisplay('0')">0</button>
+        <button onclick="appendToDisplay('.')">.</button>
+
+
+        <!-- Cancella tutto ciò che è visibile nel display. -->
+        <button onclick="clearDisplay()">C</button>
+        <!-- per calcolare il risultato -->
+        <button onclick="calculateResult()">=</button>
+        <button onclick="appendToDisplay('/')">/</button>
+        </div>
+    
+
+
+
+
+    <script>
+        // Funzione per aggiungere i numeri e operatori al display
+        function appendToDisplay(value) {
+            document.getElementById('display').value += value;
+        }
+        // Funzione per cancellare i numeri inseriti sul display
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+        }
+        // Funzione per calcolare il risultato dell'operazione
+        function calculateResult() {
+            let display = document.getElementById('display');
+            try {
+                display.value = eval(display.value); //eval esegue la stringa e lo valuta come espressione matematica
+            } catch (e) { //l blocco catch è utilizzato per catturare eventuali errori che si verificano durante l'esecuzione di eval()
+                alert('Errore di calcolo'); //errore come ad esempio inserire doppio ++
+                clearDisplay();
+            }
+        }
+
+
+    </script>
+</body>
+</html>
