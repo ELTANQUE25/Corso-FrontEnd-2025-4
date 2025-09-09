@@ -16,11 +16,20 @@
     
     <!-- campo per inserire la quantità -->
     <input type="number" id="quantity-input" placeholder="Inserisci quantità">
+
+    <!-- Categorie prodotti -->
+    <select id="category-select">
+        <option value="frutta">Frutta</option>
+        <option value="verdura">Verdura</option>
+        <option value="altro">Altro</option>
+    </select>
+
+
     
     <button onclick="aggiungieElemento()">Aggiungi</button>
     
     <!-- Lista della spesa -->
-    <ul id="shopping-list"></ul>
+    <div id="shopping-list"></div>
 
     <script>
         // Array di nomi di prodotti
@@ -38,7 +47,8 @@
                 let prodotto = {
                     id: listaSpesa.length + 1,  // ID progressivo 
                     nome: nomiProdotti[Math.floor(Math.random() * nomiProdotti.length)], // Nome casuale da nomiProdotti
-                    quantita: Math.floor(Math.random() * 5) + 1  // Quantità casuale tra 1 e 5
+                    quantita: Math.floor(Math.random() * 5) + 1,  // Quantità casuale tra 1 e 5
+                    categoria: ['frutta', 'verdura', 'altro'][Math.floor(Math.random() * 3)] // Categoria casuale
                 };
                 prodottiCasuali.push(prodotto);  // Aggiungiamo il prodotto all'array temporaneo
             }
@@ -54,22 +64,27 @@
         function aggiungieElemento() {
             let itemInput = document.getElementById('item-input');
             let quantityInput = document.getElementById('quantity-input');
+            let categorySelect = document.getElementById('category-select');
             
             let valoreProdotto = itemInput.value.trim();
-            let valoreQuantita = quantityInput.value.trim();
+            let valoreQuantita = Number(quantityInput.value);
+            let categoriaSelezionata = categorySelect.value;
+
 
             // Controllo se il prodotto e la quantità sono validi
             if (valoreProdotto !== '' && valoreQuantita !== '' && !isNaN(valoreQuantita) && valoreQuantita > 0) {
                 let prodotto = {
                     id: listaSpesa.length + 1,  // ID progressivo, in base alla lunghezza attuale della lista
                     nome: valoreProdotto,
-                    quantita: valoreQuantita
+                    quantita: valoreQuantita,
+                    categoria: categoriaSelezionata
                 };
                 listaSpesa.push(prodotto);
 
                 // Reset dei campi di input
                 itemInput.value = '';
                 quantityInput.value = '';
+                categorySelect.value = 'frutta'; // Ripristina la selezione della categoria a "frutta"
 
                 // Aggiorna la lista
                 aggiornaLista();
@@ -78,30 +93,40 @@
             }
         }
 
-        // Funzione per aggiornare la lista della spesa nell'HTML
+         // Funzione per aggiornare la lista della spesa nell'HTML
         function aggiornaLista() {
-            let ul = document.getElementById('shopping-list');
-            ul.innerHTML = '';  // Pulisce la lista esistente
+    let ul = document.getElementById('shopping-list');
+    ul.innerHTML = '';
 
-            // Aggiunge ogni prodotto alla lista
-            for (let i = 0; i < listaSpesa.length; i++) {
+    let categorie = ['frutta', 'verdura', 'altro'];
+    for (let categoria of categorie) {
+        let prodottiPerCategoria = listaSpesa.filter(p => p.categoria === categoria);
+        
+        if (prodottiPerCategoria.length > 0) {
+            let categoriaHeader = document.createElement('h3');
+            categoriaHeader.textContent = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+            ul.appendChild(categoriaHeader);
+
+            let categoriaUl = document.createElement('ul');
+            for (let prodotto of prodottiPerCategoria) {
                 let li = document.createElement('li');
-                li.textContent = `ID: ${listaSpesa[i].id} -: ${listaSpesa[i].nome} - : ${listaSpesa[i].quantita}`;
-                
-                // Pulsante "Delete" per rimuovere l'elemento
+                li.textContent = `ID: ${prodotto.id} - Prodotto: ${prodotto.nome} -: ${prodotto.quantita}`;
+
                 let deleteButton = document.createElement('button');
                 deleteButton.style.marginLeft = '10px';
                 deleteButton.textContent = 'Delete';
                 deleteButton.onclick = function() {
-                    // Rimuove l'elemento dalla lista in base all'ID
-                    listaSpesa = listaSpesa.filter(prodotto => prodotto.id !== listaSpesa[i].id);
-                    aggiornaLista();  // Rende effettiva la modifica alla lista
+                    listaSpesa = listaSpesa.filter(p => p.id !== prodotto.id);
+                    aggiornaLista();
                 };
 
-                li.appendChild(deleteButton); //aggiunge il pulsante delete come figlio alla lista
-                ul.appendChild(li); //aggiunge l'elemento li alla lista
+                li.appendChild(deleteButton);
+                categoriaUl.appendChild(li);
             }
+            ul.appendChild(categoriaUl);
         }
+    }
+}
     </script>
 </body>
 </html>
