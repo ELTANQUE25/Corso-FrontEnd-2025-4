@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista Spesa</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <h1>Lista spesa</h1>
@@ -23,9 +24,6 @@
         <option value="verdura">Verdura</option>
         <option value="altro">Altro</option>
     </select>
-
-
-    
     <button onclick="aggiungieElemento()">Aggiungi</button>
     
     <!-- Lista della spesa -->
@@ -96,8 +94,7 @@
          // Funzione per aggiornare la lista della spesa nell'HTML
         function aggiornaLista() {
     let ul = document.getElementById('shopping-list');
-    // Prende il contenitore della lista della spesa dall'HTML
-    ul.innerHTML = '';
+    ul.innerHTML = '';  // Prende il contenitore della lista della spesa dall'HTML
 
     let categorie = ['frutta', 'verdura', 'altro'];
     for (let categoria of categorie) {
@@ -115,29 +112,23 @@
             let categoriaUl = document.createElement('ul');
             for (let prodotto of prodottiPerCategoria) {
                 let li = document.createElement('li');
-                li.textContent = `ID: ${prodotto.id} - Prodotto: ${prodotto.nome} -: ${prodotto.quantita}`;
+                li.textContent = `ID: ${prodotto.id} - Prodotto: ${prodotto.nome} - ${prodotto.quantita}`;
+
+                li.addEventListener('click', function() { // Al clic sul testo, barra o sbarrra l'elemento
+                    li.classList.toggle('acquistato');
+                });
 
                 let deleteButton = document.createElement('button');
                 deleteButton.style.marginLeft = '10px';
                 deleteButton.textContent = 'Delete';
-                deleteButton.onclick = function() {
-                    // Rimuove il prodotto dalla lista usando l'ID
-                    listaSpesa = listaSpesa.filter(p => p.id !== prodotto.id);
-                    aggiornaLista();
-                };
-
-                // Pulsante per segnare come acquistato
-                let boughtButton = document.createElement('button');
-                boughtButton.style.marginLeft = '10px';
-                boughtButton.textContent = 'Acquistato';
-                boughtButton.onclick = function() {
-                    // Aggiunge/rimuove la classe "acquistato" al <li>
-                    li.classList.toggle('acquistato');
-                };
+                deleteButton.onclick = function(event) {
+                        event.stopPropagation(); // impedisce che il click barrì il testo
+                        listaSpesa = listaSpesa.filter(p => p.id !== prodotto.id);
+                        aggiornaLista();
+                        };
 
                 // Aggiunge il pulsante delete all'elemento <li>
                 li.appendChild(deleteButton);
-                li.appendChild(boughtButton);
                 // Aggiunge il <li> all'<ul> della categoria
                 categoriaUl.appendChild(li);
             }
