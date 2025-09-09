@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>
+        Lista spesa
+    </h1>
+    <input type="text" id="item-input" placeholder="Inserisci prodotto">
+    <button onclick="aggiungieElemento()">Aggiungi</button>
+    <ul id="shopping-list">
+    
+
+
+
+
+    <script>
+
+        let listaSpesa = [];
+        function aggiungieElemento() {
+            let input = document.getElementById('item-input');
+            let valore = input.value.trim();
+
+            if (valore !== '') {
+                listaSpesa.push(valore);
+                input.value = '';
+                aggiornaLista();
+            } else {
+                alert('Per favore, inserisci un prodotto valido.');
+            }
+        }
+
+        function aggiornaLista() {
+            let ul = document.getElementById('shopping-list');
+            ul.innerHTML = '';
+
+            for (let i = 0; i < listaSpesa.length; i++) {
+                let li = document.createElement('li');
+                li.textContent = listaSpesa[i];
+                ul.appendChild(li);
+            }
+        }
+
+    </script>
+</body>
+</html>
