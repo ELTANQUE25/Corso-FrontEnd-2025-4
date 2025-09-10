@@ -43,7 +43,7 @@
             // Creiamo 5 prodotti casuali
             for (let i = 0; i < 5; i++) {
                 let prodotto = {
-                    id: listaSpesa.length + 1,  // ID progressivo 
+                    id: listaSpesa.length +i+ 1,  // ID progressivo 
                     nome: nomiProdotti[Math.floor(Math.random() * nomiProdotti.length)], // Nome casuale da nomiProdotti
                     quantita: Math.floor(Math.random() * 5) + 1,  // Quantità casuale tra 1 e 5
                     categoria: ['frutta', 'verdura', 'altro'][Math.floor(Math.random() * 3)] // Categoria casuale
